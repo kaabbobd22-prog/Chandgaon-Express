@@ -11,19 +11,19 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { items, shopId, getSubtotal, getDeliveryFee, getTotal, clearCart } = useCartStore();
-  const [address, setAddress]   = useState(user?.address || '');
-  const [phone, setPhone]       = useState(user?.phone   || '');
-  const [note, setNote]         = useState('');
-  const [loading, setLoading]   = useState(false);
+  const [address, setAddress] = useState(user?.address || '');
+  const [phone, setPhone] = useState(user?.phone || '');
+  const [note, setNote] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleOrder = async () => {
     if (!address.trim()) return toast.error('Please enter delivery address');
-    if (!phone.trim())   return toast.error('Please enter phone number');
-    if (!items.length)   return toast.error('Your cart is empty');
-    
+    if (!phone.trim()) return toast.error('Please enter phone number');
+    if (!items.length) return toast.error('Your cart is empty');
+
     // 🛠️ শপ আইডি নিশ্চিত করা হচ্ছে (স্টোর থেকে অথবা কার্টের প্রথম প্রোডাক্ট থেকে)
     const finalShopId = shopId || items[0]?.shop || items[0]?.product?.shop;
-    
+
     if (!finalShopId) {
       return toast.error('Shop allocation missing. Please re-add items to cart.');
     }
@@ -38,6 +38,8 @@ export default function CheckoutPage() {
         deliveryNote: note,
         customerPhone: phone,
       });
+      console.log("🛒 Cart Items Structure:", items);
+      console.log("🏪 Outgoing Shop ID:", shopId || items[0]?.shop || items[0]?.product?.shop);
 
       clearCart();
       toast.success('Order placed successfully! 🎉');
@@ -46,8 +48,8 @@ export default function CheckoutPage() {
       // এক্সিওস এরর বা কাস্টম এরর মেসেজ হ্যান্ডলিং
       const errorMsg = err.response?.data?.message || err.message || 'Failed to place order';
       toast.error(errorMsg);
-    } finally { 
-      setLoading(false); 
+    } finally {
+      setLoading(false);
     }
   };
 
