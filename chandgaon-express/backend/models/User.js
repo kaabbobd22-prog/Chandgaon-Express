@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
+  name: { 
+    type: String, 
+    required: true, 
+    trim: true,
+    default: 'নতুন ব্যবহারকারী' // নতুন ইউজারের জন্য ডিফল্ট নাম সেট করা হলো
+  },
   phone: {
-    type: String, required: true, unique: true, trim: true,
-    match: [/^01[3-9]\d{8}$/, 'অবৈধ বাংলাদেশি ফোন নম্বর'],
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    match: [/^01[3-9]\d{8}$/, 'অবৈধ বাংলাদেশি ফোন নম্বর'], // ১১ ডিজিটের বিডি নাম্বার ফরম্যাট
   },
   role: {
     type: String,
@@ -15,9 +22,7 @@ const userSchema = new mongoose.Schema({
   address: { type: String, default: '' },
   isActive: { type: Boolean, default: true },
 
-  // OTP
-  otp: { type: String },
-  otpExpiry: { type: Date },
+  // 🛠️ ওটিপি ফিল্ড দুটি এখান থেকে সম্পূর্ণ সরিয়ে দেওয়া হলো (কারণ এগুলো এখন Otp.js মডেলে আছে)
 
   // Rider specific
   riderInfo: {
@@ -29,12 +34,6 @@ const userSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-// Hash password if set
-userSchema.pre('save', async function (next) {
-  if (this.isModified('otp') && this.otp) {
-    // Don't hash OTP, store plaintext for verification simplicity
-  }
-  next();
-});
+// 🛠️ অপ্রয়োজনীয় ওটিপি প্রি-সেভ হুকটি ফেলে দেওয়া হলো
 
 module.exports = mongoose.model('User', userSchema);
