@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     type: String, 
     required: true, 
     trim: true,
-    default: 'নতুন ব্যবহারকারী' // নতুন ইউজারের জন্য ডিফল্ট নাম সেট করা হলো
+    default: 'New User'
   },
   phone: {
     type: String,
@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema({
   address: { type: String, default: '' },
   isActive: { type: Boolean, default: true },
 
-  // 🛠️ ওটিপি ফিল্ড দুটি এখান থেকে সম্পূর্ণ সরিয়ে দেওয়া হলো (কারণ এগুলো এখন Otp.js মডেলে আছে)
 
   // Rider specific
   riderInfo: {
@@ -34,6 +33,5 @@ const userSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-// 🛠️ অপ্রয়োজনীয় ওটিপি প্রি-সেভ হুকটি ফেলে দেওয়া হলো
 
 module.exports = mongoose.model('User', userSchema);
