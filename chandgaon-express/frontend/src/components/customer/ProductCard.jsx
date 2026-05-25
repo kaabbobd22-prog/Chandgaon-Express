@@ -14,10 +14,11 @@ export default function ProductCard({ product, shopId, horizontal }) {
   if (horizontal) {
     return (
       <div className="flex-shrink-0 w-36 bg-white rounded-2xl shadow-card overflow-hidden active:scale-95 transition-transform">
-        <div className="h-24 bg-gray-50 flex items-center justify-center cursor-pointer"
+        {/* Horizontal Image Section: object-contain এবং p-2 যোগ করা হয়েছে */}
+        <div className="h-24 bg-gray-50 flex items-center justify-center cursor-pointer p-2"
           onClick={() => navigate(`/products/${product._id}`)}>
           {product.image
-            ? <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+            ? <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
             : <span className="text-4xl">🛒</span>}
         </div>
         <div className="p-2">
@@ -50,10 +51,11 @@ export default function ProductCard({ product, shopId, horizontal }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-card overflow-hidden">
-      <div className="h-32 bg-gray-50 flex items-center justify-center cursor-pointer"
+      {/* Vertical Image Section: object-contain এবং p-3 যোগ করা হয়েছে */}
+      <div className="h-32 bg-gray-50 flex items-center justify-center cursor-pointer p-3"
         onClick={() => navigate(`/products/${product._id}`)}>
         {product.image
-          ? <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+          ? <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
           : <span className="text-5xl">🛒</span>}
       </div>
       <div className="p-3">

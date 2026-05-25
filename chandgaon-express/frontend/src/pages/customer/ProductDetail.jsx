@@ -33,7 +33,7 @@ export default function ProductDetail() {
           <ArrowLeft size={18} className="text-white" />
         </button>
         <h1 className="text-white font-bold">Product Details</h1>
-        <button className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center">
+        <button onClick={() => navigate('/cart')} className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center">
           <ShoppingCart size={18} className="text-white" />
         </button>
       </div>
@@ -93,8 +93,8 @@ export default function ProductDetail() {
         )}
       </div>
 
-      {/* Bottom CTA */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white px-5 py-4 shadow-bottom flex items-center gap-3">
+      {/* Bottom CTA - এখানে fixed bottom-0 পরিবর্তন করে bottom-16 এবং z-30 দেওয়া হয়েছে */}
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-md bg-white px-5 py-4 shadow-bottom flex items-center gap-3 z-30">
         {qty === 0 ? (
           <button onClick={() => addItem(product, shopId)} className="flex-1 btn-primary flex items-center justify-center gap-2">
             <ShoppingCart size={18} />
