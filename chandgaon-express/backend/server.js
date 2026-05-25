@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const http = require('http');
+const axios = require('axios'); // 🛠️ সেলফ-পিং করার জন্য axios ইমপোর্ট করা হলো
 const { Server } = require('socket.io');
 const connectDB = require('./config/db');
 
@@ -66,6 +67,22 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+
+  // 🛠️ সার্ভার যাতে স্লিপ না হয় সেজন্য সেলফ-পিং লজিক (Keep-Alive Cron)
+  const PING_INTERVAL = 10 * 60 * 1000; // ১০ মিনিট মিলিগ্রামে
+  const selfUrl = process.env.BACKEND_URL || `http://localhost:${PORT}`;
+
+  setInterval(async () => {
+    try {
+      // হেলথ চেক এন্ডপয়েন্টে রিকোয়েস্ট পাঠানো হচ্ছে
+      const response = await axios.get(`${selfUrl}/api/health`);
+      console.log(`📡 Self-Ping Successful: Status ${response.data.status} | Time: ${new Date().toLocaleTimeString()}`);
+    } catch (error) {
+      console.error('⚠️ Self-Ping Failed:', error.message);
+    }
+  }, PING_INTERVAL);
+});
 
 module.exports = { io };
