@@ -1,0 +1,44 @@
+# Dependency directories (Dependencies কখনো গিটহাবে পুশ করতে হয় না)
+node_modules/
+jspm_packages/
+web_modules/
+
+# Environment variables (সিকিউরিটি এবং এপিআই কি সুরক্ষার জন্য খুবই জরুরি)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# Production build logs (বিল্ড ফোল্ডার এবং কম্পাইল্ড কোড)
+dist/
+build/
+.next/
+out/
+
+# Logs (এরর বা ক্র্যাশ লগ ফাইল)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Editor & System files (আপনার উইন্ডোজ বা কোড এডিটরের নিজস্ব কনফিগারেশন)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# OS Tools / Cache
+.npm
+.eslintcache
+.stylelintcache
+.parcel-cache
+.turbo/
