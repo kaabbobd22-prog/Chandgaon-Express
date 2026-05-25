@@ -20,21 +20,35 @@ export default function CheckoutPage() {
     if (!address.trim()) return toast.error('Please enter delivery address');
     if (!phone.trim())   return toast.error('Please enter phone number');
     if (!items.length)   return toast.error('Your cart is empty');
+    
+    // 🛠️ শপ আইডি নিশ্চিত করা হচ্ছে (স্টোর থেকে অথবা কার্টের প্রথম প্রোডাক্ট থেকে)
+    const finalShopId = shopId || items[0]?.shop || items[0]?.product?.shop;
+    
+    if (!finalShopId) {
+      return toast.error('Shop allocation missing. Please re-add items to cart.');
+    }
+
     setLoading(true);
     try {
+      // 🛠️ এখানে 'shopId' পরিবর্তন করে ব্যাকএন্ডের রিকোয়ারমেন্ট অনুযায়ী 'shop' পাঠানো হলো
       const data = await api.post('/orders', {
-        shopId,
+        shop: finalShopId, // 👈 ব্যাকএন্ড এই 'shop' ফিল্ডটিই খুঁজছে
         items,
         deliveryAddress: address,
         deliveryNote: note,
         customerPhone: phone,
       });
+
       clearCart();
       toast.success('Order placed successfully! 🎉');
       navigate(`/track/${data.order._id}`);
     } catch (err) {
-      toast.error(err.message || 'Failed to place order');
-    } finally { setLoading(false); }
+      // এক্সিওস এরর বা কাস্টম এরর মেসেজ হ্যান্ডলিং
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to place order';
+      toast.error(errorMsg);
+    } finally { 
+      setLoading(false); 
+    }
   };
 
   return (
@@ -116,7 +130,6 @@ export default function CheckoutPage() {
         </div>
       </div>
 
-      {/* এখানে fixed bottom-0 পরিবর্তন করে bottom-16 এবং z-30 অ্যাড করা হয়েছে */}
       <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-md bg-white px-5 py-4 shadow-bottom z-30">
         <button onClick={handleOrder} disabled={loading} className="btn-primary w-full text-center">
           {loading ? 'Placing order…' : `Place Order · ${formatCurrency(getTotal())}`}
